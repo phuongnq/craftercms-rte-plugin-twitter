@@ -1,37 +1,28 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <style>
-    #tweet {
-      width: 400px !important;
-    }
-  
-    #tweet iframe {
-      border: none !important;
-      box-shadow: none !important;
-    }
-  </style>
-  
-  <div id="tweet" tweetID="1337027549885566976"></div>
-  
+  <span class="tweet-embed">[TWEET:1337027549885566976]</span>
+  <br />
+  <span class="tweet-embed">[TWEET:1334490832142028800]</span>
+
   <script sync src="https://platform.twitter.com/widgets.js"></script>
   
   <script>
     window.onload = function () {
-      var tweet = document.getElementById("tweet");
-      var id = tweet.getAttribute("tweetID");
-  
-      twttr.widgets
-        .createTweet(id, tweet, {
-          conversation: "none", // or all
-          cards: "visible", // or hidden
-          linkColor: "#cc0000", // default is blue
-          theme: "light", // or dark
-        })
-        .then(function (el) {
-          el.contentDocument.querySelector(".footer").style.display = "none";
-        });
-    };
+      const docs = document.getElementsByClassName('tweet-embed');
+      for (let i = 0; i < docs.length; i += 1) {
+        const doc = docs[i];
+        const tweetId = doc.innerHTML.match(/\d+/g)[0];
+        console.log(tweetId);
+        if (!tweetId) continue;
+        doc.innerHTML = '';
+        window.twttr.widgets.createTweet(
+          tweetId,
+          doc,
+          {}
+        );
+      }
+    }
   </script>
 </body>
 </html>
